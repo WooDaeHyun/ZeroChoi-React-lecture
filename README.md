@@ -62,3 +62,17 @@
 개념정의
 webpack은 번들러다.
 번들러란? '번들러는 의존성이 있는 모듈 코드를 하나(또는 여러 개)의 파일로 만들어주는 도구이다.'
+
+11. webpack에서도 jsx는 자바스크립트 문법이 아니기 때문에 babel을 가져와 script type = text/babel을 추가로 세팅해줘야함
+    중요한것은 babel한다고 jsx를 바로 사용할 수 있는것이 아니라 바벨 안에서도 jsx 설정을 또 해주어야 함!!
+    우선 바벨을 설치해 보자!!
+
+11.1 바벨 설치하기
+명령어: npm i -D @babel/core @babel/preset-env @babel/preset-react babel-loader @babel/plugin-proposal-class-properties
+따로 따로 작성해도 상관없음
+명령어: npm i -D @babel/core 는 바벨에 대한 기본적인 내용들이 들어있다.
+명령어: npm i @babel/preset-env 유저의 브라우저에 맞게 알아서 최신 문법을 옛날 문법을 지원하는것으로 바꿔줌
+명령어: npm i @babel/preset-react 이게 있어야 jsx를 지원할 수 있다.
+명령어: npm i babel-loader 은 바벨이랑 웹팩을 연결해 준다.
+명령어: npm i @babel/plugin-proposal-class-properties
+ㅇㅇㅇ
