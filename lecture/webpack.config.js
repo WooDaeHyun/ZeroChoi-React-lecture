@@ -14,10 +14,26 @@ module.exports = {
 
   entry: {
     app: ["./client"],
-    //참고로 clinet.jsx에서 이미 WordRelay를 require해서 불러온 상태이므로,
+    //참고로 client.jsx에서 이미 WordRelay를 require해서 불러온 상태이므로,
     //따로 입력하지 않아도 알아서 webpack에서 알아서 client.jsx불러오면 WordRelay를 불러옴
     //확장자도 따로 작성하지 않아도 괜찮다. resolve옵션을 설정해 두면 알아서 파일을 찾는다.
   }, // 입력(웹팩 설정에서 가장 중요함)
+
+  module: {
+    rules: [
+      {
+        test: /\.jsx?/, //js파일과 jsx파일에 규칙을 적용하겠다.(정규표현식) 어떤룰? 바로 아래에 규칙이 들어감
+        loader: "babel-loader",
+        options: {
+          //바벨의 옵션들
+          presets: ["@babel/preset-env", "@babel/preset-react"],
+          plugins: ["@babel/plugin-proposal-class-properties"],
+        },
+      },
+    ],
+  },
+  //rules는 여러개의 규칙을 정할 수 있기 때문에 배열이다.
+
   output: {
     path: path.join(__dirname, "dist"), // __dirname은 현재 폴더 경로를 의미함, 2번째 인수로 받은 "dist"는 현재 폴더내에 있는 dist를 의미함
     filename: "app.js", // 원하는 출력 결과
