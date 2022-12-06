@@ -75,5 +75,3 @@ webpack은 번들러다.
 명령어: npm i @babel/preset-react 이게 있어야 jsx를 지원할 수 있다.
 명령어: npm i babel-loader 은 바벨이랑 웹팩을 연결해 준다.
 명령어: npm i @babel/plugin-proposal-class-properties
-ㅇㅇㅇ
-ddd
