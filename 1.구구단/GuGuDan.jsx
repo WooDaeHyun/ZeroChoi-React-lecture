@@ -1,5 +1,6 @@
 const React = require("react");
 const { useState, useRef } = React;
+//React에서 필요한 useState(state초기값 설정 및 state를 갱신할 수 있는 setState를 useState가 가지고 있음)와 useRef만 빼옴
 
 const GuGuDan = () => {
   //this.state = {first:0,second:1,value:1,result:''} 이걸 하나씩 나 따로 빼서 state를 만들어야함!! 그리고

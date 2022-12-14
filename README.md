@@ -84,3 +84,20 @@ webpack은 번들러다.
 명령어: npm i @babel/preset-react 이게 있어야 jsx를 지원할 수 있다.
 명령어: npm i babel-loader 은 바벨이랑 웹팩을 연결해 준다.
 명령어: npm i @babel/plugin-proposal-class-properties
+
+12. 웹팩 데브 서버와 핫 리로딩
+    명령어 : npm i react-refresh @pmmmwh/react-refresh-webpack-plugin -D
+    개발용 서버만들기
+    명령어 : npm i -D webpack-dev-server
+    12.1 package.json에서 scripts를 "dev": "webpack serve --env development"로 변경해 준다.
+    12.2 webpack.config.js에서 const RefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin")로 require해주고
+    12.3 module키 아래에 plugins키를 만들어 다음 값을 입력한다. plugins: [new RefreshWebpackPlugin()] << 앞으로 빌드 할 때마다 이 부분이 실행된다.
+    12.4 webpack.config.js에서 module의 options에서 plugins배열에 "react-refresh/babel" 를 추가해준다.
+    12.5 devServer 설정하기
+    12.6 webpack.config.js에서 devServer설정을 위해 output키 아래에
+    devServer: {
+    devMiddleware: { publicPath: "/dist" },
+    static: { directory: path.resolve(\_\_dirname) },
+    hot: true,
+    },
+    를 설정해준다.

@@ -6,7 +6,7 @@ class WordRelay extends Component {
   state = {
     word: "우대현",
     value: "",
-    result: "끝말잇기 시작!",
+    result: "끝말잇기 시작!!!!!!!!!!!!",
     wordPath: [],
   };
   //클래스의 내가 만드는 메서드는 반드시 화살표 함수로 해주어야한다!!

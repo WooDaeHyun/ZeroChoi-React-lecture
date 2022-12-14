@@ -2,6 +2,7 @@
 // webpack은 webpack.config.js로 모든게 돌아간다.
 // 쪼개져 있는 jsx파일들을 하나로 묶어줌!
 const path = require("path");
+const RefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 //Node에서 경로를 쉽게 조작하도록 제공함!!
 
 module.exports = {
@@ -27,17 +28,30 @@ module.exports = {
         options: {
           //바벨의 옵션들
           presets: ["@babel/preset-env", "@babel/preset-react"],
-          plugins: ["@babel/plugin-proposal-class-properties"],
+          plugins: [
+            "@babel/plugin-proposal-class-properties",
+            "react-refresh/babel",
+          ],
         },
       },
     ],
   },
   //rules는 여러개의 규칙을 정할 수 있기 때문에 배열이다.
-
+  plugins: [new RefreshWebpackPlugin()],
   output: {
     path: path.join(__dirname, "dist"), // __dirname은 현재 폴더 경로를 의미함, 2번째 인수로 받은 "dist"는 현재 폴더내에 있는 dist를 의미함
     filename: "app.js", // 원하는 출력 결과
+    publicPath: "/dist",
   }, // 출력(웹팩 설정에서 가장 중요함)
+  //프론트 개발 편의를 위해 임시로 만든 서버
+  devServer: {
+    devMiddleware: { publicPath: "/dist" },
+    static: { directory: path.resolve(__dirname) },
+    //resolve의 __dirname은 현재 폴더를 기준으로 index.html을 찾음
+    //만약 src폴더에 들어 있다면 두 번째 인자로 'src'를 적어주어야함
+    //path.resolve(__dirname, 'src') 이렇게
+    hot: true,
+  },
 };
 //지금 해당 폴더와 파일들을 기준으로 설명해 보면 index.html에서는
 //./dist/app.js를 src로 사용한다.
