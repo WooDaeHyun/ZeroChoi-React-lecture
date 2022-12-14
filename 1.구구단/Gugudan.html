@@ -32,6 +32,7 @@
         //Vue에서 content에 데이터를 넣을때는 {{}} 이중 중괄호/
         //React에서 자바스크립트 데이터를 넣을때는 {} 중괄호
         const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9));
+        //userState의 반환값이 배열[value,setState]이기 때문에 구조분해 할당으로 사용할 수 있는 것임!!
         const [second, setSecond] = React.useState(
           Math.ceil(Math.random() * 9)
         );
