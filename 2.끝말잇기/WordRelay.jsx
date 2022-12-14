@@ -6,22 +6,33 @@ class WordRelay extends Component {
   state = {
     word: "우대현",
     value: "",
-    result: "",
+    result: "끝말잇기 시작!",
+    wordPath: [],
   };
   //클래스의 내가 만드는 메서드는 반드시 화살표 함수로 해주어야한다!!
   //render처럼 직접 있는것은 빼고
   onSubmitForm = (e) => {
     e.preventDefault();
+    if (
+      this.state.wordPath.includes(`${this.state.value} -> `) &&
+      this.state.word[this.state.word.length - 1] === this.state.value[0]
+    ) {
+      alert("중복된 단어 입니다!");
+      return;
+    }
+
     if (this.state.word[this.state.word.length - 1] === this.state.value[0]) {
       this.setState({
-        result: "딩동댕",
+        result: "통과",
         word: this.state.value,
         value: "",
       });
+      this.state.wordPath.push(`${this.state.value} -> `);
+      console.log(this.state);
       this.input.focus();
     } else {
       this.setState({
-        result: "땡",
+        result: "패배",
         value: "",
       });
       //this.setState에 업데이트에 필요한 데이터만 넣어도 기존에 있던 state가 새롭게 할당되는게 아니라 기본 js 객체 문법과 동일함
@@ -54,6 +65,7 @@ class WordRelay extends Component {
           <button>입력</button>
         </form>
         <div>{this.state.result}</div>
+        <div>{this.state.wordPath}</div>
       </>
     );
   }
