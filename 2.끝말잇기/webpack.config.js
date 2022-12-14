@@ -7,7 +7,7 @@ const path = require("path");
 module.exports = {
   name: "wordrelay-setting", // webpack 설정의 이름! 무엇을 웹팩으로 설정하는지
   mode: "development", //지금은 개발용 실서비스에서는 production으로 바꾸면 됨
-  devtool: "eval", // 빠르게 하는 용도
+  devtool: "eval", // 빠르게 하는 용도 실제 실서비스에서는 hidden-source-map으로 만들어야함
   resolve: {
     extensions: [".js", ".jsx"],
   },
