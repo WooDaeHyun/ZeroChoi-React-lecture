@@ -12,6 +12,7 @@ const WordRelay = () => {
 
   const onSubmitForm = (e) => {
     e.preventDefault();
+    console.log(e.target.children.word.value);
     if (
       wordPath.includes(`${value} -> `) &&
       word[word.length - 1] === value[0]
@@ -43,7 +44,12 @@ const WordRelay = () => {
       <div>{word}</div>
       <form onSubmit={onSubmitForm}>
         <label htmlFor="inputWord">단어 입력 </label>
-        <input ref={inputRef} value={value} onChange={onChangeInput} />
+        <input
+          ref={inputRef}
+          value={value}
+          onChange={onChangeInput}
+          id="word"
+        />
         <button>입력</button>
       </form>
       <div>{result}</div>
