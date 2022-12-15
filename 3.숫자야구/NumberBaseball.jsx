@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Try from "./Try";
 
 function getNumbers() {}
 
@@ -43,15 +44,10 @@ class NumberBaseball extends Component {
         <div>시도: {this.state.tries.length}</div>
         <ul>
           {this.fruits.map((v, i) => {
-            return (
-              <li key={v.fruit}>
-                <b>{v.fruit}</b> - {i}
-                <div>컨텐츠</div>
-                <div>컨텐츠</div>
-                <div>컨텐츠</div>
-                <div>컨텐츠</div>
-              </li>
-            );
+            //여기서 v와 i가 Try에 컴포넌트에 전달이 되지 않음!
+            //그래서 사용하는것이 props임! 부모가 자식에게 데이터를 넘겨줄때!! 사용함
+            //html에서 어트리뷰트라고 부르는 속성을 react에서는 props라고 부른다!! 한 마디로 속성을 props라고 부름
+            return <Try value={v} index={i} />;
           })}
         </ul>
       </>
