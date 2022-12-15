@@ -1,6 +1,6 @@
 import React from "react";
 import Try from "./Try";
-const { useState, useRef } = React;
+const { useState } = React;
 
 function getNumbers() {
   const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -13,9 +13,9 @@ function getNumbers() {
 }
 
 const NumberBaseball = () => {
-  const [result, setResult] = useState("숫자야구");
+  const [result, setResult] = useState("⚾️숫자야구");
   const [value, setValue] = useState("");
-  const [answer, setAnswer] = useState(getNumbers());
+  const [answer, setAnswer] = useState(getNumbers); // lazy init 호출 연산자를 붙이지 않으면 한 번만 실행되고 다시 렌더링 되는건 무시됨(useState에서만 실행해야함)
   const [tries, setTries] = useState([]);
 
   //클래스 내부에서는 es6축약표현으로 메서드를 정의해야 하는데,
@@ -30,6 +30,7 @@ const NumberBaseball = () => {
         setValue("");
         setAnswer(getNumbers());
         setTries([]);
+        setResult("⚾️숫자야구");
       }, 1000);
     } else {
       const answerArray = value.split("").map((v) => parseInt(v));
@@ -42,6 +43,7 @@ const NumberBaseball = () => {
           setValue("");
           setAnswer(getNumbers());
           setTries([]);
+          setResult("⚾️숫자야구");
         }, 1000);
       } else {
         for (let i = 0; i < 4; i++) {
