@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import Try from "./Try";
 
-function getNumbers() {}
+function getNumbers() {
+  const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const array = [];
+  for (let i = 0; i < 4; i++) {
+    const chosen = candidate.splice(Math.floor(Math.random() * (9 - i)), 1)[0];
+    array.push(chosen);
+  }
+  return array;
+}
 
 class NumberBaseball extends Component {
   state = {
@@ -12,9 +20,63 @@ class NumberBaseball extends Component {
   };
   //클래스 내부에서는 es6축약표현으로 메서드를 정의해야 하는데,
   //주의!!react에서는 개발자가 만든 메서드는 화살표함수로 정의해 주어야함!!
-  onSubmitForm = () => {};
+  onSubmitForm = (e) => {
+    e.preventDefault();
+    if (this.state.value === this.state.answer.join("")) {
+      this.setState({
+        result: "홈런!",
+        tries: [...this.state.tries, { try: this.state.value, result: "홈런" }],
+      });
+      alert("게임을 다시 시작합니다!");
+      this.setState({
+        value: "",
+        answer: getNumbers(),
+        tries: [],
+      });
+    } else {
+      const answerArray = this.state.value.split("").map((v) => parseInt(v));
+      let strike = 0;
+      let ball = 0;
+      if (this.state.tries.length >= 9) {
+        this.setState({
+          result: `10번 넘게 틀려서 실패! 답은 ${this.state.answer.join(
+            ","
+          )} 입니다.`,
+        });
+        alert("게임을 다시 시작합니다!");
+        this.setState({
+          value: "",
+          answer: getNumbers(),
+          tries: [],
+        });
+      } else {
+        for (let i = 0; i < 4; i++) {
+          if (answerArray[i] === this.state.answer[i]) {
+            strike++;
+          } else if (this.state.answer.includes(answerArray[i])) {
+            ball++;
+          }
+        }
+        this.setState({
+          tries: [
+            ...this.state.tries,
+            {
+              try: this.state.value,
+              result: `${strike} 스트라이크, ${ball} 볼입니다.`,
+            },
+          ],
+          value: "",
+        });
+      }
+    }
+  };
 
-  onChangeInput = () => {};
+  onChangeInput = (e) => {
+    console.log(this.state.answer);
+    this.setState({
+      value: e.target.value,
+    });
+  };
 
   fruits = [
     { fruit: "사과", taste: "맛있다" },
@@ -43,11 +105,12 @@ class NumberBaseball extends Component {
         </form>
         <div>시도: {this.state.tries.length}</div>
         <ul>
-          {this.fruits.map((v, i) => {
+          {this.state.tries.map((v, i) => {
             //여기서 v와 i가 Try에 컴포넌트에 전달이 되지 않음!
             //그래서 사용하는것이 props임! 부모가 자식에게 데이터를 넘겨줄때!! 사용함
             //html에서 어트리뷰트라고 부르는 속성을 react에서는 props라고 부른다!! 한 마디로 속성을 props라고 부름
-            return <Try value={v} index={i} />;
+            //보통 컴포넌트를 분리할 때 반복문을 기준으로 많이 분리한다고 함!
+            return <Try key={`${i + 1}차 시도 :`} value={v} />;
           })}
         </ul>
       </>
