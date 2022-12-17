@@ -1,4 +1,11 @@
-import React, { useState, useRef, Component, useEffect, useMemo } from "react";
+import React, {
+  useState,
+  useRef,
+  Component,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import Ball from "./Ball";
 
 function getWinNumbers() {
@@ -21,11 +28,13 @@ function getWinNumbers() {
 //useMemo : 복잡한 함수 결과값을 기억
 //useRef : 일반 값을 기억
 const Lotto = () => {
-  const lottoNumbers = useMemo(() => getWinNumbers(), []);
-  //두 번째 인자인 배열의 요소의 변경이 있기 전까지 다시 실행되지 않음!
-  //훅스가 getWinNumbers()의 리턴값을 기억하고 있을것임!
-  const [winNumbers, setWinNumbers] = useState(lottoNumbers);
   const [winBalls, setWinBalls] = useState([]);
+  const lottoNumbers = useMemo(() => getWinNumbers(), [winBalls]);
+  //두 번째 인자인 배열의 요소(state)의 변경이 있기 전까지 다시 실행되지 않음!
+  //훅스가 getWinNumbers()의 리턴값을 기억하고 있을것임!
+  //함수 컴포넌트는 매번 리렌더링 될 때마다 전체가 재실행 되므로 발생하는 비효율성을 방지
+  //위의 상황에서는 winBalls가 계속 변화하므로 계속 실행됨!!
+  const [winNumbers, setWinNumbers] = useState(lottoNumbers);
   const [bonus, setBonus] = useState(null);
   const [redo, setRedo] = useState(false);
   const timeouts = useRef([]);
@@ -75,14 +84,26 @@ const Lotto = () => {
   //   });
   // }
 
-  const onClickRedo = () => {
+  const onClickRedo = useCallback(() => {
     setWinNumbers(getWinNumbers());
     setWinBalls([]);
     setBonus(null);
     setRedo(false);
     timeouts.current = [];
     //timeouts.current가 직접적으로 재할당 되므로 상태가 변경된것임!
-  };
+  }, []);
+  //useCallback은 함수를 기억해 놓았다가 함수 컴포넌트 전체가 다시 실행되더라도 onClickRedo가
+  //새로 생성되지 않는다. 함수 생성하는데 비용이 큰 경우에 유용함!!
+  //useMemo는 값을 기억하는것!
+  //useCallback은 함수를 기억하는것!
+  //주의해야할 점은 !! 처음 딱 기억한 모든 것을 데이터가 변경되어도 그대로 기억하고 있다!!!
+  //그러므로 useCallback으로 래핑된 함수 안에서 state를 관리하는 경우 주의해야한다!!
+  //그래서 두 번째 인자로 배열을 받는것임!
+  //두 번째 인자인 배열의 요소(state)의 변경이 있기 전까지 다시 실행되지 않음!
+  //반대로 변경이 있으면 다시 실행됨! 즉 언제 다시 실행할지 결정하는것임!
+  //추가로 자식 컴포넌트에 props로 함수를 넘기는 경우에는 useCallback을 사용해야한다!!
+  //그게 계속 새롭게 함수 컴포넌트가 실행될 때마다 자식 컴포넌트는 새로운 함수를 계속 전달 받는다고 생각함!
+  //불필요한 리렌더링은 계속하게 된다!
 
   return (
     <>
