@@ -92,6 +92,7 @@ const NumberBaseball = () => {
       </form>
       <div>시도: {tries.length}</div>
       <ul>
+        {/* map은 새로운 배열을 생성해서 반환하지만, jsx에서는 배열안에 jsx담아서 리턴하는것도 가능하다!(풀어서 태그들이 인식됨) 그래서 map을 작성해도 되는것임  */}
         {tries.map((v, i) => {
           //여기서 v와 i가 Try에 컴포넌트에 전달이 되지 않음!
           //그래서 사용하는것이 props임! 부모가 자식에게 데이터를 넘겨줄때!! 사용함

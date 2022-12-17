@@ -29,6 +29,9 @@ const RSP = () => {
   const [imgCoord, setImgCoord] = useState("0");
   const [score, setScore] = useState(0);
   const interval = useRef(null);
+  const rockRef = useRef(null);
+  const scissorRef = useRef(null);
+  const paperRef = useRef(null);
 
   useEffect(() => {
     // componentDidMount, componentDidUpdate 역할(1대1 대응은 아님)
@@ -37,7 +40,7 @@ const RSP = () => {
       // componentWillUnmount 역할
       clearInterval(interval.current);
     };
-  }, [imgCoord]);
+  }, [imgCoord]); //여러개 참조하고 싶으면 콤마로 구별해서 넣으면 됨 [imgCoord, score] 이런식
 
   // class 형의 경우!
   // componentDidMount() {
@@ -87,7 +90,13 @@ const RSP = () => {
         return prevScore - 1;
       });
     }
+    rockRef.current.disabled = true;
+    scissorRef.current.disabled = true;
+    paperRef.current.disabled = true;
     setTimeout(() => {
+      rockRef.current.disabled = false;
+      scissorRef.current.disabled = false;
+      paperRef.current.disabled = false;
       interval.current = setInterval(changeHand, 100);
     }, 2000);
   };
@@ -101,13 +110,28 @@ const RSP = () => {
         }}
       ></div>
       <div>
-        <button id="rock" className="btn" onClick={() => onClickBtn("바위")}>
+        <button
+          id="rock"
+          className="btn"
+          onClick={() => onClickBtn("바위")}
+          ref={rockRef}
+        >
           바위
         </button>
-        <button id="scissor" className="btn" onClick={() => onClickBtn("가위")}>
+        <button
+          id="scissor"
+          className="btn"
+          onClick={() => onClickBtn("가위")}
+          ref={scissorRef}
+        >
           가위
         </button>
-        <button id="paper" className="btn" onClick={() => onClickBtn("보")}>
+        <button
+          id="paper"
+          className="btn"
+          onClick={() => onClickBtn("보")}
+          ref={paperRef}
+        >
           보
         </button>
       </div>
