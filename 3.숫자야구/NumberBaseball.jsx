@@ -17,12 +17,10 @@ const NumberBaseball = () => {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState(getNumbers); // lazy init 호출 연산자를 붙이지 않으면 한 번만 실행되고 다시 렌더링 되는건 무시됨(useState에서만 실행해야함)
   const [tries, setTries] = useState([]);
-  const inputEl = useRef(null);
   //클래스 내부에서는 es6축약표현으로 메서드를 정의해야 하는데,
   //주의!!react에서는 개발자가 만든 메서드는 화살표함수로 정의해 주어야함!!
   const onSubmitForm = (e) => {
     e.preventDefault();
-    inputEl.current.value = "";
     if (value === answer.join("")) {
       setResult("홈런!");
       setTries([...tries, { try: value, result: "홈런" }]);
@@ -68,6 +66,10 @@ const NumberBaseball = () => {
 
   const onChangeInput = (e) => {
     console.log(answer);
+    if (isNaN(e.target.value)) {
+      alert("숫자를 입력해 주세요!");
+      return;
+    }
     setValue(e.target.value);
   };
 
@@ -86,8 +88,6 @@ const NumberBaseball = () => {
           onChange={onChangeInput}
           //input은 value와 onChange를 세트를 묶어서 사용한다!!
           //만약 언컨트롤드인풋으로 작성하려면 value와 onChange 대신 defaultValue로 한다.
-          ref={inputEl}
-          type="number"
         />
       </form>
       <div>시도: {tries.length}</div>
