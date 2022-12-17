@@ -1,13 +1,20 @@
-import React from "react";
+import React, { memo } from "react";
 
-const Try = (props) => {
+const Try = memo((props) => {
+  //메모로 래핑을 한경우에는 부모컴포넌트가 리렌더링 되었을때 자식컴포넌트까지 리렌더링되는 것만 막아준다.
+  //memo HOC 고차 컴포넌트이다.
+  //메모로 래핑 될 때, React는 컴포넌트를 렌더링하고 결과를 메모이징한다. 그리고 다음 렌더링이 일어날 때 props가 같다면,
+  //React는 메모이징된 내용을 재사용한다.
+  //state나 props가 바뀐경우에는 여전히 리렌더링 잘 된다.
   return (
     <li>
       <div>{props.value.try}</div>
       <div>{props.value.result}</div>
     </li>
   );
-};
+});
+Try.displayName = "Try";
+//단, memo를하게 되면 컴포넌트의 이름이 변경되기 때문에 컴포넌트의 이름을 제대로 변경시켜주어야 한다.
 export default Try;
 
 //***********************class형태 */

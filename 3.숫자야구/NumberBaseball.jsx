@@ -1,6 +1,6 @@
 import React from "react";
 import Try from "./Try";
-const { useState } = React;
+const { useState, useRef } = React;
 
 function getNumbers() {
   const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -17,11 +17,12 @@ const NumberBaseball = () => {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState(getNumbers); // lazy init 호출 연산자를 붙이지 않으면 한 번만 실행되고 다시 렌더링 되는건 무시됨(useState에서만 실행해야함)
   const [tries, setTries] = useState([]);
-
+  const inputEl = useRef(null);
   //클래스 내부에서는 es6축약표현으로 메서드를 정의해야 하는데,
   //주의!!react에서는 개발자가 만든 메서드는 화살표함수로 정의해 주어야함!!
   const onSubmitForm = (e) => {
     e.preventDefault();
+    inputEl.current.value = "";
     if (value === answer.join("")) {
       setResult("홈런!");
       setTries([...tries, { try: value, result: "홈런" }]);
@@ -70,16 +71,9 @@ const NumberBaseball = () => {
     setValue(e.target.value);
   };
 
-  // fruits = [
-  //   { fruit: "사과", taste: "맛있다" },
-  //   { fruit: "배", taste: "맛있다" },
-  //   { fruit: "포도", taste: "맛있다" },
-  //   { fruit: "귤", taste: "맛있다" },
-  //   { fruit: "감", taste: "맛있다" },
-  // ];
-
   //render는 리액트가 제공하는 메서드이므로 메서드 축약표현으로 가능하지만
   //내가 직접 만드는 메서드들은 화살표함수로 만들어야 한다.
+
   return (
     <>
       <h1>{result}</h1>
@@ -92,6 +86,8 @@ const NumberBaseball = () => {
           onChange={onChangeInput}
           //input은 value와 onChange를 세트를 묶어서 사용한다!!
           //만약 언컨트롤드인풋으로 작성하려면 value와 onChange 대신 defaultValue로 한다.
+          ref={inputEl}
+          type="number"
         />
       </form>
       <div>시도: {tries.length}</div>
@@ -101,6 +97,9 @@ const NumberBaseball = () => {
           //그래서 사용하는것이 props임! 부모가 자식에게 데이터를 넘겨줄때!! 사용함
           //html에서 어트리뷰트라고 부르는 속성을 react에서는 props라고 부른다!! 한 마디로 속성을 props라고 부름
           //보통 컴포넌트를 분리할 때 반복문을 기준으로 많이 분리한다고 함!
+          //props는 부모-자식에게만 데이터 전달이 가능하다! (손자에게는 안돼) 주려면 주고 주고 주고 이런식으로 넘겨야함
+          //A -> b -> c -> d -> e  이런경우에 A -> e로 바로 넘겨주기 위해서 등장한것이 context다.
+          //context를 응용한것이 redux다.
           return <Try key={`${i + 1}차 시도 :`} value={v} />;
         })}
       </ul>
